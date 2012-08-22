@@ -7,9 +7,7 @@
 
    Diseñar un programa que devuelva el representante normalizado de
    un numero dado en base 10 , expresado en una base B con 2 <= B < 10.
-   * 12 digitos para la mantisa.
-   * 7 digitos para la mantisa.
-   
+   El usuario ingresa la cantidad de digitos (t) para la mantisa.   
    
    Este programa trabaja con cadenas de caracteres
 }
@@ -103,18 +101,19 @@ end;
 // Funcion que convierte la parte fraccionaria a la base B
 function convertirFraccionaria( snumero : string; base : byte): string;
 var
-	cod, cont : integer;
+	cont : integer;
 	dnumero, digito : real;
 	aux : string;
 begin
 	dnumero := strtofloat(snumero);
+	
 	if (length(snumero) = 0) or (dnumero = 0.0) then
 		convertirFraccionaria := '0'
 	else
 		convertirFraccionaria := '';
 		
 	cont := 1;
-	while ( (dnumero <> 0.0) and (cont <= 15) ) do
+	while ( (dnumero <> 0.0) and (cont <= 30) ) do
 		begin
 			digito := int(dnumero * base);
 			dnumero := frac(dnumero * base);
@@ -125,34 +124,68 @@ begin
 end;
 // Fin funcion convertirFraccionaria
 
+// Funcion que normaliza el numero en base b con t digitos de mantisa
+function normalizar( sentera, sfrac : string; t : byte): string;
+var
+	cod, iexp, i : integer;
+	aux, sexp : string;
+begin
+	iexp := length(sentera);
+	
+	if (sentera = '0') then
+		begin
+			i := 1;
+			while (sfrac[i] = '0') do
+				begin
+					iexp := iexp - 1;
+					i := i + 1;
+				end;
+			delete(sfrac, 1, i-1);
+			aux := sfrac;
+		end
+	else
+		aux := sentera + sfrac;
+
+	aux := copy(aux, 1, t);
+	
+	str(iexp, sexp);
+	normalizar := '0.' + aux + ' x 10 ^ ' + sexp;
+end;
+// Fin de la funcion normalizar
+
 
 // Programa principal
 var
 	numOriginal, parteEntera, parteFraccionaria : string;
-	parteEnteraConv, parteFracConv, numConvertido : string;
-	base : byte;
+	parteEnteraConv, parteFracConv, numConvertido, numNormal : string;
+	base, t : byte;
 
-BEGIN
-	numOriginal := '123546.11346';
-	base := 8;
-	
+BEGIN	
 	write('Ingrese un numero en base 10 (puede ser real): ');
 	readln(numOriginal);
 	repeat
 		write('Ingrese la base a la que quiere convertir (base entre 2 y 9): ');
 		readln(base);
 	until( (base >= 2) and (base < 10) );
+	repeat
+		write('Ingrese cantidad de digitos para la mantisa (mayor que 1, menor que 20): ');
+		readln(t);
+	until( (t>1) and (t < 20) );
 	
 	parteEntera := obtenerEntera( numOriginal );
 	parteFraccionaria := obtenerFraccionaria( numOriginal );
 	parteEnteraConv := convertirEntera( parteEntera, base );
 	parteFracConv := convertirFraccionaria( parteFraccionaria, base );
 	numConvertido := parteEnteraConv + '.' + parteFracConv;
-		
+	numNormal := normalizar(parteEnteraConv, parteFracConv, t);
+	
+	clrscr();
 	writeln();
 	writeln('Numero Original en base 10: ', numOriginal);
 	writeln();
 	writeln('Numero Convertido a base ', base,': ', numConvertido);
+	writeln();
+	writeln('Numero normalizado en base ', base, ' con mantisa de ', t, ' digitos: ', numNormal);
 	writeln();
 	writeln();
 END.
