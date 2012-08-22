@@ -1,5 +1,5 @@
 {
-   TP1Ej2v2.pas
+   Normalizador.pas
    
    @autor: Germán Martínez
    
