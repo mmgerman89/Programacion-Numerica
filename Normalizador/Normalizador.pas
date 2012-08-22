@@ -13,7 +13,7 @@
 }
 
 
-program TP1Ej2v2;
+program Normalizador;
 
 uses sysutils,crt;
 
