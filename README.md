@@ -17,3 +17,12 @@ Representante Simetrico
 Este programa solicita al usuario un número real en base 10 y la cantidad de 
 digitos significativos (t) para obtener el representante simetrico de dicho numero 
 en base 10. En otras palabras, "redondea" el numero a t digitos significativos
+
+___________________________________________________________________________________
+Raíces de funciones
+------------
+Utiliza el evaluador de funciones desarrollado por Alexander Borbon Alpizar. Es la
+clase llamada Parseador.
+La clase Raices implementa los métodos de Bisección, Secante, Régula False Modificada,
+y de Newton. Se debe pasar una función y su derivada para el método de Newton.
+La clase Prueba sirve como ejemplo para su utilización.
